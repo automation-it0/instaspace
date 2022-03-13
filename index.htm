@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documento</title>
+</head>
+<body>
+<style>
+    *, *:before, *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      padding:0;
+      margin:0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .content {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-clip-path: border-box;
+              clip-path: border-box;
+      transform: translateZ(0);
+    }
+    
+    .block {
+      position: relative;
+      height: 100vh;
+    }
+    
+    [class*=item-parallax] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease-out;
+      will-change: transform;
+    }
+    
+    .item-parallax-media {
+      z-index: 1;
+    }
+    .item-parallax-media img {
+      will-change: transform;
+    }
+    
+    .item-parallax-content {
+      z-index: 2;
+    }
+    
+    .block:nth-child(1) .item-parallax-content {
+      transform: translateY(calc( var(--yBlock-1) * 0.5px ));
+    }
+    
+    .block:nth-child(1) .item-parallax-media img {
+      transform: translateY(calc( var(--yBlock-1) * 0.1px ));
+    }
+    
+    .block:nth-child(2) .item-parallax-content {
+      transform: translateY(calc( var(--yBlock-2) * 0.5px ));
+    }
+    
+    .block:nth-child(2) .item-parallax-media img {
+      transform: translateY(calc( var(--yBlock-2) * 0.1px ));
+    }
+    
+    .block:nth-child(3) .item-parallax-content {
+      transform: translateY(calc( var(--yBlock-3) * 0.5px ));
+    }
+    
+    .block:nth-child(3) .item-parallax-media img {
+      transform: translateY(calc( var(--yBlock-3) * 0.1px ));
+    }
+    
+    .block:nth-child(4) .item-parallax-content {
+      transform: translateY(calc( var(--yBlock-4) * 0.5px ));
+    }
+    
+    .block:nth-child(4) .item-parallax-media img {
+      transform: translateY(calc( var(--yBlock-4) * 0.1px ));
+    }
+    
+    .block:nth-child(5) .item-parallax-content {
+      transform: translateY(calc( var(--yBlock-5) * 0.5px ));
+    }
+    
+    .block:nth-child(5) .item-parallax-media img {
+      transform: translateY(calc( var(--yBlock-5) * 0.1px ));
+    }
+    
+    html {
+      background: linear-gradient(to bottom ,#00171f 0%,#3a572a 200%);
+    }
+    
+    .flex-container {
+      display: flex;
+    }
+    
+    .centered-content {
+      margin: auto;
+    }
+    
+    .head-large {
+      margin-bottom: 5vw;
+      font-size: 10vw;
+      line-height: 1.2em;
+      font-family: "Inknut Antiqua", serif;
+      color: white;
+    }
+    
+    .head-small {
+      margin-bottom: 1.5rem;
+      font-size: 1.2rem;
+      line-height: 1.2em;
+      font-family: "Roboto Condensed", sans-serif;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .head-centered {
+      text-align: center;
+    }
+    
+    .copy {
+      display: block;
+      max-width: 500px;
+      margin-right: auto;
+      margin-bottom: 1.5rem;
+      margin-left: auto;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+      font-family: "Roboto", sans-serif;
+      font-size: 1rem;
+      line-height: 1.8em;
+      text-align: center;
+    }
+    
+    .copy-white {
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .item-parallax-media {
+      overflow: hidden;
+    }
+    .item-parallax-media img {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      -o-object-fit: cover;
+         object-fit: cover;
+    }
+    
+    .section-landing:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 24%;
+      width: 10px;
+      height: 80%;
+      background-color: white;
+      z-index: 3;
+      transform: translateY(-13vw);
+    }
+    
+    .section-landing .item-parallax-media {
+      opacity: calc( 1 - (var(--y) * 0.0009) );
+    }
+    
+    .landing-content {
+      padding-left: 30%;
+    }
+    
+    .section-intro:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 80%;
+      background-color: #0d232a;
+      transform: translateX(-50%) translateY(-50%) rotate(calc( (var(--y) * 0.1deg) ));
+      will-change: transform;
+      -webkit-backface-visibility: visible;
+              backface-visibility: visible;
+    }
+    
+    .img-grid {
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    
+    .img-gridItem {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+    .img-gridItem img {
+      display: block;
+      width: 50%;
+      height: 40vh;
+      -o-object-fit: cover;
+         object-fit: cover;
+      will-change: transform;
+      -webkit-backface-visibility: visible;
+              backface-visibility: visible;
+    }
+    .img-gridItem.type-left img {
+      margin-right: auto;
+    }
+    .img-gridItem.type-right img {
+      margin-left: auto;
+    }
+    .img-gridItem:nth-child(1) img {
+      transform: translateX(calc( var(--yBlock-4) * -0.03% ));
+    }
+    .img-gridItem:nth-child(2) img {
+      transform: translateX(calc( var(--yBlock-4) * 0.03% ));
+    }
+    
+    .img-caption {
+      position: absolute;
+      top: 50%;
+      width: 50%;
+      transform: translateY(-50%);
+    }
+    .img-caption * {
+      text-align: left;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .type-left .img-caption {
+      right: 0;
+    }
+    .type-right .img-caption {
+      left: 0;
+    }
+    
+    .section-end:before {
+      content: "";
+      position: absolute;
+      bottom: 50%;
+      left: 24%;
+      width: 10px;
+      height: 80%;
+      background-color: white;
+      z-index: 3;
+      transform: translateY(8vw);
+    }
+    
+    .custom-properties-ftw {
+      padding: 2.5rem 1.5rem;
+    }
+    .custom-properties-ftw .head-small {
+      margin-bottom: 0;
+    }
+    </style>
+    <main class="content js-content">
+      
+        <section class="block section-landing">
+          <figure class="item-parallax-media">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/46992/luca-bravo-189272.jpg" alt="" />
+          </figure>
+          <div class="item-parallax-content flex-container">
+            <div class="landing-content centered-content">
+              <h1 class="head-large">InstaSpace Agency</h1>
+            </div>
+          </div>
+        </section>
+        
+        <section class="block section-intro">
+          <div class="item-parallax-content flex-container">
+            <div class="centered-content">
+              <h2 class="head-small head-centered" style="font-size:2rem;">VISIBILITA</h2>
+              <p class="copy copy-white" style="font-size:3rem;text-align:left;">
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section class="block section-part">
+          <figure class="item-parallax-media">
+            <img src="https://c.pxhere.com/images/ac/c7/1017d13376bea9c3f5492cc9f5c1-1447579.jpg!d" alt="" />
+          </figure>
+          <div class="item-parallax-content flex-container">
+            <div class="centered-content">
+              <h1 class="head-large head-centered">Lavoro <br/>professionale</h1>
+              <p class="copy copy-white">
+                Tutti i nostri clienti sono al 100% soddisfatti, dedichiamo molto lavoro dietro alle crescite di più di 5000 Profili Instagram!
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section class="block">
+          <div class="item-parallax-content flex-container img-grid">
+            <figure class="img-gridItem type-right">
+              <figcaption class="img-caption">
+                <h1 class="head-small">IMPECCABILI</h1>
+                <p class="copy copy-white">
+                  Regaliamo sempre qualche follower in più, la nostra crescita è organica e 100% italiana interessata al tuo tipo di profilo! Noi ci occupiamo di trovare il pubblico perfetto per te!
+                </p>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+        
+        <section class="block section-end">
+          <figure class="item-parallax-media">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/46992/noah-silliman-141979.jpg" alt="" />
+          </figure>
+          <div class="item-parallax-content flex-container">
+            <div class="landing-content centered-content">
+              <h1 class="head-large">Prova ora</h1>
+            </div>
+          </div>
+        </section>
+        
+        <section class="custom-properties-ftw">
+          <h3 class="head-small head-centered">SELEZIONA QUANTITA'</h3>
+        </section>
+        <style>
+          @import url('https://rsms.me/inter/inter-ui.css');
+::selection {
+  background: #2D2F36;
+}
+::-webkit-selection {
+  background: #2D2F36;
+}
+::-moz-selection {
+  background: #2D2F36;
+}
+body {
+  font-family: 'Inter UI', sans-serif;
+  margin: 0;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+  position: absolute;
+  place-content: center;
+  width: calc(100% - 40px);
+}
+@media (max-width: 767px) {
+  .page {
+    height: auto;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+}
+.container {
+  display: flex;
+  height: 320px;
+  margin: 0 auto;
+  width: 640px;
+}
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column;
+    height: 630px;
+    width: 320px;
+  }
+}
+.left {
+  background: white;
+  height: calc(100% - 40px);
+  top: 20px;
+  position: relative;
+  width: 50%;
+}
+@media (max-width: 767px) {
+  .left {
+    height: 100%;
+    left: 20px;
+    width: calc(100% - 40px);
+    max-height: 270px;
+  }
+}
+.login {
+  font-size: 50px;
+  font-weight: 900;
+  margin: 50px 40px 40px;
+}
+.eula {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 40px;
+}
+.right {
+  background: #474A59;
+  box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
+  color: #F1F1F2;
+  position: relative;
+  width: 50%;
+}
+@media (max-width: 767px) {
+  .right {
+    flex-shrink: 0;
+    height: 100%;
+    width: 100%;
+    max-height: 350px;
+  }
+}
+svg {
+  position: absolute;
+  width: 320px;
+}
+path {
+  fill: none;
+  stroke: url(#linearGradient);;
+  stroke-width: 4;
+  stroke-dasharray: 240 1386;
+}
+.form {
+  margin: 40px;
+  position: absolute;
+}
+label {
+  color:  #c2c2c5;
+  display: block;
+  font-size: 14px;
+  height: 16px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+input {
+  background: transparent;
+  border: 0;
+  color: #f2f2f2;
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  outline: none !important;
+  width: 100%;
+}
+input::-moz-focus-inner { 
+  border: 0; 
+}
+#submit {
+  color: #707075;
+  margin-top: 40px;
+  transition: color 300ms;
+}
+#submit:focus {
+  color: #f2f2f2;
+}
+#submit:active {
+  color: #d0d0d2;
+}
+        </style>
+        <section>
+        <div class="page" style="width:100%;">
+          <div class="container">
+            <div class="left">
+              <div class="login" style="font-size:30px">Checkout</div>
+              <div class="eula">Accettiamo i maggiori sistemi di pagamento internazionali, per garantire affidabilità ai nostri clienti</div>
+            </div>
+            <div class="right">
+              <svg viewBox="0 0 320 300">
+                <defs>
+                  <linearGradient
+                                  inkscape:collect="always"
+                                  id="linearGradient"
+                                  x1="13"
+                                  y1="193.49992"
+                                  x2="307"
+                                  y2="193.49992"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop
+                          style="stop-color:#ff00ff;"
+                          offset="0"
+                          id="stop876" />
+                    <stop
+                          style="stop-color:#ff0000;"
+                          offset="1"
+                          id="stop878" />
+                  </linearGradient>
+                </defs>
+                <path d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143" />
+              </svg>
+              <div class="form">
+                <label for="email">Username</label>
+                <input style="font-family:'Montserrat'" type="text" id="email">
+                <label for="password">Quantità Followers</label>
+                <input style="font-family:'Montserrat'" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" id="password">
+                <input type="submit" onclick="func()" id="submit" value="PROCEDI">
+              </div>
+            </div>
+          </div>
+        </div></section>
+        <div style="margin-top:650px;"></div>
+        <style>
+          .transition, ul li i:before, ul li i:after, p {
+  transition: all 0.25s ease-in-out;
+}
+
+.flipIn, ul li, h1 {
+  animation: flipdown 0.5s ease both;
+}
+
+.no-select, h2 {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  perspective: 900;
+  overflow-y: scroll;
+  background-color: #dce7eb;
+  font-family: "Titillium Web", sans-serif;
+}
+
+
+h1, h2 {
+  color: #000000;
+}
+
+
+p {
+  font-size: 17px;
+  line-height: 26px;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  max-height: 800px;
+  opacity: 1;
+  transform: translate(0, 0);
+  margin-top: 14px;
+  z-index: 2;
+}
+
+ul {
+  list-style: none;
+  perspective: 900;
+  padding: 0;
+  margin: 0;
+}
+ul li {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 4px;
+  padding-top: 18px;
+  border-top: 1px dotted #dce7eb;
+}
+ul li:nth-of-type(1) {
+  animation-delay: 0.5s;
+}
+ul li:nth-of-type(2) {
+  animation-delay: 0.75s;
+}
+ul li:nth-of-type(3) {
+  animation-delay: 1s;
+}
+ul li:last-of-type {
+  padding-bottom: 0;
+}
+ul li i {
+  position: absolute;
+  transform: translate(-6px, 0);
+  margin-top: 16px;
+  right: 0;
+}
+ul li i:before, ul li i:after {
+  content: "";
+  position: absolute;
+  background-color: #ff6873;
+  width: 3px;
+  height: 9px;
+}
+ul li i:before {
+  transform: translate(-2px, 0) rotate(45deg);
+}
+ul li i:after {
+  transform: translate(2px, 0) rotate(-45deg);
+}
+ul li input[type=checkbox] {
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+}
+ul li input[type=checkbox]:checked ~ p {
+  margin-top: 0;
+  max-height: 0;
+  opacity: 0;
+  transform: translate(0, 50%);
+}
+ul li input[type=checkbox]:checked ~ i:before {
+  transform: translate(2px, 0) rotate(45deg);
+}
+ul li input[type=checkbox]:checked ~ i:after {
+  transform: translate(-2px, 0) rotate(-45deg);
+}
+
+@keyframes flipdown {
+  0% {
+    opacity: 0;
+    transform-origin: top center;
+    transform: rotateX(-90deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  80% {
+    transform: rotateX(8deg);
+  }
+  83% {
+    transform: rotateX(6deg);
+  }
+  92% {
+    transform: rotateX(-3deg);
+  }
+  100% {
+    transform-origin: top center;
+    transform: rotateX(0deg);
+  }
+}
+li p{
+  color:#fff;
+  text-align:justify;
+}
+.FAQ{
+  width:80%;
+  max-width:500px;
+  margin:auto;
+}
+.FAQ *{
+  color:rgb(240, 243, 224)
+}
+</style>
+        <div class="FAQ">
+        <h1>DOMANDE</h1>
+        <ul>
+          <li>
+            <input type="checkbox" checked>
+            <i></i>
+            <h2>Come funziona</h2>
+            <p>Una volta acquistato un addetto nel team entro 24 ore processerà il pagamento e inizierà l'aumento, l'aumento va dai 50 ai 500 followers al giorno, mettiamo molto impegno in ciò che facciamo per garantire un servizio unico.</p>
+          </li>
+          <li>
+            <input type="checkbox" checked>
+            <i></i>
+            <h2>Esperienza del Team</h2>
+            <p>Noi ci occupiamo dei servizi social media da più di 5 anni, conosciamo ogni metodo per l'aumento, il pubblico che arriva sui profili è 100% inerente al tipo di profilo, un profilo fitness riceverà persone principalmente interessate al fitness per esempio.</p>
+          </li>
+          <li>
+            <input type="checkbox" checked>
+            <i></i>
+            <h2>Sicurezza</h2>
+            <p>Noi, al contrario di molte altre agenzie, non richiediamo alcuna password, non invieremo mai followers fake, siamo disponibili 24/7 con l'assistenza su WhatsApp, accettiamo pagamenti sicuri con PayPal, Bonifici e Criptovalute.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="wrapper">
+        <div class="testimonials testimonial-1">
+          <div class="card card-1">
+            <div class="card-header">
+              <div class="card-img"><img src="https://rvs-testimonials-grid-section.netlify.app/images/image-daniel.jpg" alt=""></div>
+              <div class="card-details">
+                <div class="card-name">Daniele</div>
+                <div class="card-status">Cliente da 2 anni</div>
+              </div>
+            </div>
+            <div class="card-body">“ Avevo bisogno di far crescere il mio pubblico e che fosse interessato al mio profilo, il team di InstaSpace si è occupato in maniera impeccabile della crescita, in due anni non ho mai dovuto dare una password, hanno fatto tutto loro! ”</div>
+          </div>
+          <div class="card card-2">
+            <div class="card-header">
+              <div class="card-img"><img src="https://rvs-testimonials-grid-section.netlify.app/images/image-jonathan.jpg" alt=""></div>
+              <div class="card-details">
+                <div class="card-name">John</div>
+                <div class="card-status">Nuovo cliente</div>
+              </div>
+            </div>
+            <div class="card-body">“ Dopo 24 ore mi sono trovato l'incremento già finito, sono stato sorpreso dalla velocità di InstaSpace, consiglio a tutti! ”</div>
+          </div>
+          <div class="card card-4">
+            <div class="card-header">
+              <div class="card-img"><img src="https://rvs-testimonials-grid-section.netlify.app/images/image-patrick.jpg" alt=""></div>
+              <div class="card-details">
+                <div class="card-name">Giulio</div>
+              </div>
+            </div>
+            <div class="card-body">“ Lo staff è stato molto cordiale, l'aumento è stato veloce e penso che ricomprerò, la migliore agenzia italiana! ”</div>
+          </div>
+        </div>
+      </div>
+      <a style="position:sticky;bottom:0;left:0;padding:20px;z-index:1" href="https://wa.me/+393515850252"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="" style="width:50px;height:50px;"></a>
+    </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+    const body = document.body;
+    const content = document.querySelector('.js-content');
+    const blocks = document.querySelectorAll('.block');
+    
+    const updateOffset = () => {
+      requestAnimationFrame(updateOffset);
+      body.style.setProperty('--y', content.scrollTop);
+      updateProps();
+    };
+    
+    const updateProps = () => {
+      let i = -1;
+      for (let block of blocks) {
+        i += 1;
+        let top = blocks[i].getBoundingClientRect().top;
+        if (top < window.innerHeight * 1.3 && top > window.innerHeight * -1.3) {
+          body.style.setProperty(`--yBlock-${i + 1}`, top);
+        } else {
+          body.style.setProperty(`--yBlock-${i + 1}`, 0);
+        }
+      }
+    };
+    
+    updateProps();
+    updateOffset();
+    var current = null;
+document.querySelector('#email').addEventListener('focus', function(e) {
+  if (current) current.pause();
+  current = anime({
+    targets: 'path',
+    strokeDashoffset: {
+      value: 0,
+      duration: 700,
+      easing: 'easeOutQuart'
+    },
+    strokeDasharray: {
+      value: '240 1386',
+      duration: 700,
+      easing: 'easeOutQuart'
+    }
+  });
+});
+document.querySelector('#password').addEventListener('focus', function(e) {
+  if (current) current.pause();
+  current = anime({
+    targets: 'path',
+    strokeDashoffset: {
+      value: -336,
+      duration: 700,
+      easing: 'easeOutQuart'
+    },
+    strokeDasharray: {
+      value: '240 1386',
+      duration: 700,
+      easing: 'easeOutQuart'
+    }
+  });
+});
+document.querySelector('#submit').addEventListener('focus', function(e) {
+  if (current) current.pause();
+  current = anime({
+    targets: 'path',
+    strokeDashoffset: {
+      value: -730,
+      duration: 700,
+      easing: 'easeOutQuart'
+    },
+    strokeDasharray: {
+      value: '530 1386',
+      duration: 700,
+      easing: 'easeOutQuart'
+    }
+  });
+});
+document.getElementById("password").value="0"
+function func(){
+  var email = document.getElementById("email").value.replace(" ","%20")
+  if(email===""){
+    return
+  }
+  var followers = document.getElementById("password").value
+  window.open("https://api.whatsapp.com/send?phone=+393515850252&text=Salve, il mio nome su instagram è "+email+" e desidero comprare "+followers+" followers, grazie!")
+}
+    </script>
+<main>
+  <style>@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&display=swap");
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      height: 100vh;
+    }
+    
+    main {
+      width: 100%;
+      height: 100%;
+      padding-top: 5%;
+    }
+    main .wrapper {
+      position: relative;
+      width: 70%;
+      margin: 0px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    main .wrapper .testimonials {
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    main .wrapper .testimonial-1 {
+      width: 75%;
+      height: 100%;
+      row-gap: 4%;
+      column-gap: 3%;
+    }
+    main .wrapper .testimonial-1 .card {
+      margin-bottom:10px;
+      height: 48%;
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 4px 4px 15px 1px rgba(0, 0, 0, 0.159);
+    }
+    main .wrapper .testimonial-1 .card .card-header {
+      height: 25%;
+      display: flex;
+      align-items: center;
+    }
+    main .wrapper .testimonial-1 .card .card-header .card-img {
+      width: 25%;
+      display: flex;
+      align-items: center;
+    }
+    main .wrapper .testimonial-1 .card .card-header .card-img img {
+      width: 70%;
+      border-radius: 50%;
+    }
+    main .wrapper .testimonial-1 .card .card-header .card-details .card-name {
+      color: #e6e6e6;
+    }
+    main .wrapper .testimonial-1 .card .card-header .card-details .card-status {
+      font-size: 11px;
+      color: #b3b3b3;
+    }
+    main .wrapper .testimonial-1 .card .card-sub-header {
+      height: 25%;
+      color: white;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    main .wrapper .testimonial-1 .card .card-body {
+      height: 50%;
+      line-height: 18px;
+      color: #b3b3b3;
+      display: flex;
+      align-items: center;
+    }
+    main .wrapper .testimonial-1 .card-1 {
+      width: 70%;
+      background: #7541c8;
+      position: relative;
+    }
+    main .wrapper .testimonial-1 .card-1 .card-header .card-img {
+      width: 9%;
+    }
+    main .wrapper .testimonial-1 .card-2 {
+      width: 27%;
+      background: #48556a;
+    }
+    main .wrapper .testimonial-1 .card-3 {
+      width: 27%;
+    }
+    main .wrapper .testimonial-1 .card-3 .card-header .card-details .card-name {
+      color: gray;
+    }
+    main .wrapper .testimonial-1 .card-3 .card-header .card-details .card-status {
+      color: #b3b3b3;
+    }
+    main .wrapper .testimonial-1 .card-3 .card-sub-header {
+      color: gray;
+    }
+    main .wrapper .testimonial-1 .card-4 {
+      width: 70%;
+      background: #19212e;
+    }
+    main .wrapper .testimonial-1 .card-4 .card-header .card-img {
+      width: 9%;
+    }
+    main .wrapper .testimonial-2 {
+      width: 22%;
+      height: 100%;
+    }
+    main .wrapper .testimonial-2 .card {
+      width: 100%;
+      height: 100%;
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 4px 4px 15px 1px rgba(0, 0, 0, 0.159);
+    }
+    main .wrapper .testimonial-2 .card .card-header {
+      height: 10%;
+      display: flex;
+      align-items: center;
+    }
+    main .wrapper .testimonial-2 .card .card-header .card-img {
+      width: 25%;
+      display: flex;
+      align-items: center;
+    }
+    main .wrapper .testimonial-2 .card .card-header .card-img img {
+      width: 70%;
+      border-radius: 50%;
+    }
+    main .wrapper .testimonial-2 .card .card-header .card-details .card-name {
+      color: gray;
+    }
+    main .wrapper .testimonial-2 .card .card-header .card-details .card-status {
+      font-size: 11px;
+      color: #b3b3b3;
+    }
+    main .wrapper .testimonial-2 .card .card-sub-header {
+      height: 20%;
+      color: gray;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    main .wrapper .testimonial-2 .card .card-body {
+      height: 70%;
+      line-height: 18px;
+      color: #b3b3b3;
+      display: flex;
+      align-items: center;
+    }
+    
+    @media screen and (max-width: 1200px) {
+      body {
+        height: 100%;
+      }
+    
+      main {
+        padding-top: unset;
+      }
+      main .wrapper {
+        flex-direction: column;
+        width: 85%;
+        margin: 50px auto;
+        row-gap: 20px;
+      }
+      main .wrapper .testimonial-1 {
+        width: 100%;
+        flex-direction: column;
+        row-gap: 20px;
+      }
+      main .wrapper .testimonial-1 .card {
+        width: 100%;
+      }
+      main .wrapper .testimonial-1 .card-1 .card-header .card-img, main .wrapper .testimonial-1 .card-4 .card-header .card-img {
+        width: 24%;
+      }
+      main .wrapper .testimonial-2 {
+        width: 100%;
+      }
+    }</style>
+
+</main>
+</body>
+</html>
